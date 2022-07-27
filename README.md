@@ -34,3 +34,48 @@
 6. Create CRUD with JdbcTemplate
     - create/delete -> use JdbcTemplate.update()
     - read -> use JdbcTemplate.query()
+# Working with Liquidbase
+
+1. Add dependency
+``` xml
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+```
+
+2. Add plugin
+
+``` xml
+   <plugin>
+       <groupId>org.liquibase</groupId>
+       <artifactId>liquibase-maven-plugin</artifactId>
+       <configuration>
+           <propertyFileWillOverride>true</propertyFileWillOverride>
+           <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+       </configuration>
+   </plugin>
+```
+
+3. Add config
+
+Create **[liquibase.properties](src/main/resources/liquibase.properties)** file
+
+``` properties 
+#contexts: ${liquibase.contexts}
+changeLogFile=src/main/resources/db/changelog/changelog.xml
+diffChangeLogFile=src/main/resources/db/changelog/${maven.build.timestamp}changelog.xml
+driver=com.mysql.cj.jdbc.Driver
+username=root
+password=pw
+url=jdbc:mysql://localhost:3306/forum?allowPublicKeyRetrieval=true&useSSL=false
+verbose=true
+#dropFirst: false
+```
+
+4. Bootstrap database
+ 
+5. Execute changelog command
+``` shell
+mvn liquibase:generateChangeLog -Dliquibase.outputChangeLogFile=src/main/resources/db/changelog/generate.xml
+```

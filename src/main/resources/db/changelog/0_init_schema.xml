@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+  <changeSet author="mhova (generated)" id="1658845042078-1">
+    <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'comment';</sqlCheck>
+    </preConditions>
+    <createTable tableName="comment">
+      <column autoIncrement="true" name="id" type="INT UNSIGNED">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="post_id" type="INT UNSIGNED">
+        <constraints nullable="false"/>
+      </column>
+      <column name="value" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="reg_date" type="timestamp"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="mhova (generated)" id="1658845042078-2">
+    <preConditions onError="MARK_RAN" onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'post';</sqlCheck>
+    </preConditions>
+    <createTable tableName="post">
+      <column autoIncrement="true" name="id" type="INT UNSIGNED">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="content" type="VARCHAR(255)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="reg_date" type="timestamp"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="mhova (generated)" id="1658845042078-3">
+    <preConditions onError="MARK_RAN" onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'comment';</sqlCheck>
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'post';</sqlCheck>
+    </preConditions>
+    <createIndex indexName="fk_comment_post" tableName="comment">
+      <column name="post_id"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet author="mhova (generated)" id="1658845042078-4">
+    <preConditions onError="MARK_RAN" onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'comment';</sqlCheck>
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM information_schema.tables t WHERE table_name = 'post';</sqlCheck>
+    </preConditions>
+    <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="comment" constraintName="fk_comment_post" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="post" validate="true"/>
+  </changeSet>
+</databaseChangeLog>
