@@ -79,3 +79,39 @@ verbose=true
 ``` shell
 mvn liquibase:generateChangeLog -Dliquibase.outputChangeLogFile=src/main/resources/db/changelog/generate.xml
 ```
+
+## Create ACPT database
+
+1. Create new sql image name *demo-mysql-acpt*
+``` shell
+docker run --name demo-mysql-acpt -p 3307:3306 -e MYSQL_ROOT_PASSWORD=pw -d mysql
+```
+2. Clone liquibase config file for acpt *[liauibase-acpt.properties](src/main/resources/liquibase-acpt.properties)*
+
+3. Create new maven profile *acpt*
+``` xml 
+<profile>
+   <id>acpt</id>
+   <build>
+       <plugins>
+           <plugin>
+               <groupId>org.liquibase</groupId>
+               <artifactId>liquibase-maven-plugin</artifactId>
+               <configuration combine.self="override">
+                   <propertyFileWillOverride>true</propertyFileWillOverride>
+                   <propertyFile>src/main/resources/liquibase-acpt.properties</propertyFile>
+               </configuration>
+           </plugin>
+       </plugins>
+   </build>
+</profile>
+```
+4. Apply change to the ACPT database
+``` shell
+mvn liquibase:update -P acpt
+```
+
+5. Run the app to verify it still work with the ACPT database
+```shell
+mvn spring-boot:run -Dspring-boot.run.profiles=acpt
+```
