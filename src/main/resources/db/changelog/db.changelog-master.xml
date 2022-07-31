@@ -10,4 +10,5 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
   
   <include file="db/changelog/0_init_schema.xml" relativeToChangelogFile="false"/>
+  <include file="db/changelog/1_add_user.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

@@ -115,3 +115,35 @@ mvn liquibase:update -P acpt
 ```shell
 mvn spring-boot:run -Dspring-boot.run.profiles=acpt
 ```
+
+## Using ``liquibase:diff`` 
+1. Update database new user table and constraints in  DEV database
+
+``` sql 
+CREATE TABLE user(
+   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR(50) NOT NULL,
+   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+ALTER TABLE post ADD COLUMN user_id INT(6) UNSIGNED NOT NULL;
+ALTER TABLE post ADD CONSTRAINT fk_post_user FOREIGN KEY (user_id) REFERENCES user(id);
+ALTER TABLE comment ADD COLUMN user_id INT(6) UNSIGNED NOT NULL;
+ALTER TABLE comment ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user(id);
+
+```
+
+2. Run ``liquibase:diff`` to generate changelog file with the ACPT database
+```shell
+mvn liquibase:diff -P acpt
+```
+
+3. Rename changelog file  and update the changelog master
+``` xml
+  <include file="db/changelog/1_add_user.xml" relativeToChangelogFile="false"/>
+```
+4. Apply the new change to ACPT database
+```shell
+   mvn compile
+   mvn liquibase:update -P acpt
+```
+

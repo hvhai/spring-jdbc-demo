@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="mhova (generated)" id="1659233273063-1">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="INT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="reg_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-2">
+        <addColumn tableName="post">
+            <column name="user_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-3">
+        <addColumn tableName="comment">
+            <column name="user_id" type="INT(10) UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-4">
+        <createIndex indexName="fk_comment_user" tableName="comment">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-5">
+        <createIndex indexName="fk_post_user" tableName="post">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-6">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="comment" constraintName="fk_comment_user" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="mhova (generated)" id="1659233273063-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="post" constraintName="fk_post_user" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

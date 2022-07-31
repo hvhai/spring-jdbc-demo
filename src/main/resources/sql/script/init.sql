@@ -1,3 +1,6 @@
+----------------------------------------------------------------------------------------------------
+-- Create init database with Post and Comment table
+----------------------------------------------------------------------------------------------------
 -- check connection
 SELECT now();
 -- create database
@@ -37,3 +40,17 @@ desc comment;
 INSERT INTO comment (post_id, value) VALUES (1, 'You\'re welcome !!');
 SELECT * from comment c ;
 SELECT * FROM post p ;
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+-- Add User table
+----------------------------------------------------------------------------------------------------
+CREATE TABLE user(
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+ALTER TABLE post ADD COLUMN user_id INT(6) UNSIGNED NOT NULL;
+ALTER TABLE post ADD CONSTRAINT fk_post_user FOREIGN KEY (user_id) REFERENCES user(id);
+ALTER TABLE comment ADD COLUMN user_id INT(6) UNSIGNED NOT NULL;
+ALTER TABLE comment ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user(id);
+
